@@ -4,10 +4,7 @@
 #import libraries and modules
 #from platform import platform
 import turtle
-import pygame as pg
-from pygame.sprite import Sprite
-import random
-from random import randint
+
 
 
 #game settings 
@@ -23,9 +20,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 GRAY = (128, 128, 128, 255)
 
-#create background
+#create background screen (bg)
 bg = turtle.Screen()
 bg.title("Manny's Pong Game")
-bg.color(GRAY)
+bg.bgcolor(WHITE)
 bg.setup(WIDTH, HEIGHT)
-
