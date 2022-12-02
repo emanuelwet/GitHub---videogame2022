@@ -157,7 +157,7 @@ plat21 = Platform(810, 200, 10, 50)
 plat22 = Platform(810, 180, 10, 20)
 plat23 = Platform(750, 180, 70, 10)
 
-\
+
 # instructions for snowflakes (size, # of snowflakes to create)
 for i in range(1000):
     m = Mob(randint(0,WIDTH), randint(0,HEIGHT), 10, 10, (colorbyte(),colorbyte(),colorbyte()))
