@@ -1,5 +1,7 @@
-import pygame as pg
 
+import pygame as pg
+from pygame.sprite import Sprite
+import turtle
 
 
 # game settings 
@@ -31,6 +33,39 @@ def draw_text(text, size, color, x, y):
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
         screen.blit(text_surface, text_rect)
+
+# platforms
+class Platform(Sprite):
+    def __init__(self, x, y, w, h):
+        Sprite.__init__(self)
+        self.image = pg.Surface((w, h))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+#create vertical moving platform
+#platform 
+plat = turtle.Turtle()
+plat.speed(5)
+plat.shape("square")
+plat.color("black")
+plat.shapesize(stretch_wid=6, stretch_len=2)
+plat.penup()
+plat.goto(100,50)
+
+
+
+#create the groups
+all_plats = pg.sprite.Group()
+
+
+# plateforms are created (size + position)
+player = Platform(10, 50, 50, 35)
+plat1 = Platform(20, 40, 50, 35)
+plat1.image.fill(BLACK)
+
+
 
 
 
