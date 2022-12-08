@@ -55,13 +55,6 @@ plat.goto(10,10)
 
 
 
-
-
-
-
-
-
-
 # The Game loop
 running = True
 while running:
