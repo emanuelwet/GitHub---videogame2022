@@ -38,7 +38,8 @@ gb = turtle.Turtle()
 gb.speed(0)
 gb.shape("circle")
 gb.color("Yellow")
-gb.shapesize() 
+gb.pendown()
+gb.goto(0, 0) #center of screen
 
 
 
