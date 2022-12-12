@@ -18,9 +18,8 @@ screen.setup(width=800, height=650)
 screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games) )
 
 
-#create vertical moving platform
+#create platform
 #platform  
-
 plat1 = turtle.Turtle() #automatically creates a background screen
 plat1.speed(5) #anywhere between 0-10
 #using this command I can simply type in the shape I want (given that it exists in the Turtle Screen's shape dictionary)
@@ -34,6 +33,12 @@ plat1.penup()
 #allows me to set the position of the object 
 plat1.goto(-350,0)
 
+#create the game ball (gb)
+gb = turtle.Turtle()
+gb.speed(0)
+gb.shape("circle")
+gb.color("Yellow")
+gb.shapesize() 
 
 
 
