@@ -94,3 +94,8 @@ while True:
     # Move the gameball
     gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 2 pixels
     gb.sety(gb.ycor() + gb.yspeed)
+
+    # Boarders
+    if gb.ycor() > 290:
+        gb.sety(290)
+        gb.yspeed *= - 1
