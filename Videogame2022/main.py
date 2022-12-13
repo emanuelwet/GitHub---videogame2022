@@ -38,9 +38,12 @@ gb = turtle.Turtle()
 gb.speed(0)
 gb.shape("circle")
 gb.color("Yellow")
-gb.pendown()
+gb.penup()
 gb.goto(0, 0) #starting point = center of screen
+#moving the ball
 
+gb.xspeed = 0.05 #everytime the ball moves it moves by 2 pixels
+gb.yspeed = 0.05
         
 # Game score
 player = 0
@@ -83,6 +86,11 @@ screen.onkeypress(plat1_right, "d")
 
 
 
+# Main game loop
 
 while True:
     screen.update()
+
+    # Move the gameball
+    gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 2 pixels
+    gb.sety(gb.ycor() + gb.yspeed)
