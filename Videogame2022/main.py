@@ -15,7 +15,7 @@ screen = turtle.Screen()
 screen.title("Manny's Pong Game...")
 screen.bgcolor("Purple")
 screen.setup(width=800, height=650)
-screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games) )
+screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
 
 
 #create platform
@@ -33,15 +33,28 @@ plat1.penup()
 #allows me to set the position of the object 
 plat1.goto(0,-250)
 
-#create the game ball (gb)
+#create the gameball (gb)
 gb = turtle.Turtle()
 gb.speed(0)
 gb.shape("circle")
 gb.color("Yellow")
 gb.pendown()
-gb.goto(0, 0) #center of screen
+gb.goto(0, 0) #starting point = center of screen
 
         
+# Game score
+player = 0
+
+# Show the gamescore on the display (gamescore = gs)
+gs = turtle.Turtle()
+gs.speed(0)
+gs.color("white")
+gs.penup()
+gs.hideturtle() #makes the curser/ drawing pen invisible and only shows the writing
+gs.goto(0, 260)
+gs.write("Player score : 0", align = "center", font = ("Times New Roman", 15, "normal"))
+
+
     # create functions to move objects #
 
 # Platform moves to the left
@@ -62,6 +75,12 @@ def plat1_right():
 screen.listen() #focuses on screen and acts on keyboard clicks
 screen.onkeypress(plat1_left, "a") #when a/d keys are pressed the written action takes place
 screen.onkeypress(plat1_right, "d")
+
+# Moving the gameball 
+
+
+
+
 
 
 
