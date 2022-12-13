@@ -41,9 +41,27 @@ gb.color("Yellow")
 gb.pendown()
 gb.goto(0, 0) #center of screen
 
+        
+    # create functions to move objects #
+
+# Platform moves to the left
+def plat1_left():
+    x = plat1.xcor()
+#x coordinate decreases as object moves left, increases as it moves right
+    x -= 10
+    plat1.setx(x)
+
+#allows me to move the platform to the right 
+def plat1_right():
+    x = plat1.xcor()
+    x += 10
+    plat1.setx(x)
 
 
-
+#keyboard binding
+screen.listen() #focuses on screen and acts on keyboard clicks
+screen.onkeypress(plat1_left, "a") #when a/d keys are pressed the written action takes place
+screen.onkeypress(plat1_right, "d")
 
 
 
