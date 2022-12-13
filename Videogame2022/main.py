@@ -42,7 +42,7 @@ gb.penup()
 gb.goto(0, 0) #starting point = center of screen
 #moving the ball
 
-gb.xspeed = 0.05 #everytime the ball moves it moves by 2 pixels
+gb.xspeed = 0.05 #everytime the ball moves it moves by 0.05 pixels
 gb.yspeed = 0.05
         
 # Game score
@@ -92,10 +92,25 @@ while True:
     screen.update()
 
     # Move the gameball
-    gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 2 pixels
+    gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 0.05 pixels
     gb.sety(gb.ycor() + gb.yspeed)
 
-    # Boarders
-    if gb.ycor() > 290:
-        gb.sety(290)
+    # Top and Bottom Borders
+    if gb.ycor() > 300:
+        gb.sety(300)
+        gb.yspeed *= - 1 
+
+    if gb.ycor() < -300:
+        gb.sety(-300)
         gb.yspeed *= - 1
+    
+    #Left and Right Borders
+    if gb.xcor() > 380:
+        gb.setx(380)
+        gb.xspeed *= -1
+    
+    if gb.xcor() < -390:
+        gb.setx(-390)
+        gb.xspeed *= -1
+
+        
