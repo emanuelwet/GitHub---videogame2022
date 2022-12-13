@@ -27,11 +27,11 @@ plat1.shape("square")
 #allows me to simply write the name of the color of the platform (I could also use the color code)
 plat1.color("black")
 #numbers have to be positive (width, length,)
-plat1.shapesize(stretch_wid=6, stretch_len=0.5)
+plat1.shapesize(stretch_wid=0.5, stretch_len=6)
 #"Pen-Up" simply means the created object does not draw anything on the sreen when moving
 plat1.penup()
 #allows me to set the position of the object 
-plat1.goto(-350,0)
+plat1.goto(0,-250)
 
 #create the game ball (gb)
 gb = turtle.Turtle()
