@@ -14,11 +14,10 @@ import os
 #create background
 screen = turtle.Screen()
 screen.title("Manny's Pong Game...")
-#screen.bgcolor("Purple")
+screen.bgcolor("Purple")
 screen.setup(width=800, height=650)
 screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
-# insert background image
-screen.bgpic("C:\GitHub\Intro to Programming 2022\Videogame2022\heavencity.gif")
+
 # gameball image code = screen.addshape("C:\GitHub\Intro to Programming 2022\Videogame2022\circle.gif.gif")
 
 # Scoring 
@@ -53,8 +52,8 @@ gb.goto(0, 0) #starting point = center of screen
 
 
 #moving the ball
-gb.xspeed = 0.05 #everytime the ball moves it moves by 0.05 pixels
-gb.yspeed = 0.05
+gb.xspeed = 0.5 #everytime the ball moves it moves by 0.5 pixels
+gb.yspeed = 0.5
         
 # Game score
 player = 0
@@ -63,7 +62,7 @@ player = 0
 # Show the gamescore on the display (gamescore = gs)
 gs = turtle.Turtle()
 gs.speed(0)
-gs.color("purple")
+gs.color("Blue")
 gs.penup()
 gs.hideturtle() #makes the curser/ drawing pen invisible and only shows the writing
 gs.goto(0, 260)
@@ -90,11 +89,6 @@ def plat1_right():
 screen.listen() #focuses on screen and acts on keyboard clicks
 screen.onkeypress(plat1_left, "a") #when a/d keys are pressed the written action takes place
 screen.onkeypress(plat1_right, "d")
-
-
-
-
-
 
 
 # Main game loop
