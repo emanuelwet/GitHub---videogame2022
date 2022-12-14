@@ -17,6 +17,11 @@ screen.bgcolor("Purple")
 screen.setup(width=800, height=650)
 screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
 
+# Scoring 
+
+score = 0
+
+
 
 #create platform
 #platform  
@@ -55,7 +60,7 @@ gs.color("white")
 gs.penup()
 gs.hideturtle() #makes the curser/ drawing pen invisible and only shows the writing
 gs.goto(0, 260)
-gs.write("Player score : 0", align = "center", font = ("Times New Roman", 15, "normal"))
+gs.write("Player Score : 0", align = "center", font = ("Times New Roman", 15, "normal"))
 
 
     # create functions to move objects #
@@ -79,7 +84,6 @@ screen.listen() #focuses on screen and acts on keyboard clicks
 screen.onkeypress(plat1_left, "a") #when a/d keys are pressed the written action takes place
 screen.onkeypress(plat1_right, "d")
 
-# Moving the gameball 
 
 
 
@@ -91,7 +95,7 @@ screen.onkeypress(plat1_right, "d")
 while True:
     screen.update()
 
-    # Move the gameball
+# Move the gameball
     gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 0.05 pixels
     gb.sety(gb.ycor() + gb.yspeed)
 
@@ -103,7 +107,8 @@ while True:
     if gb.ycor() < -345:
         gb.goto(0, 0)
         gb.yspeed *= - 1
-    
+        score +=1
+        gs.write("Player Score : 0  {}".format(score), align = "center", font = ("Times New Roman", 15, "normal"))
     
     #Left and Right Borders
     if gb.xcor() > 380:
@@ -114,3 +119,5 @@ while True:
         gb.setx(-390)
         gb.xspeed *= -1
 
+    # Platform and gameball colliding
+  
