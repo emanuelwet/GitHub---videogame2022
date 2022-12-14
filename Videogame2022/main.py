@@ -19,7 +19,7 @@ screen.setup(width=800, height=650)
 screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
 # insert background image
 screen.bgpic("C:\GitHub\Intro to Programming 2022\Videogame2022\heavencity.gif")
-
+# gameball image code = screen.addshape("C:\GitHub\Intro to Programming 2022\Videogame2022\circle.gif.gif")
 
 # Scoring 
 score = 0
@@ -49,7 +49,8 @@ gb.color("dark blue")
 gb.penup()
 gb.goto(0, 0) #starting point = center of screen
 
-# adding an image
+# adding an image for the gameball
+
 
 #moving the ball
 gb.xspeed = 0.05 #everytime the ball moves it moves by 0.05 pixels
