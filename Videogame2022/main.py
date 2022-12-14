@@ -9,28 +9,29 @@
 
 # turtle will allow me to create graphic illustrations
 import turtle
+import os
 
 #create background
 screen = turtle.Screen()
 screen.title("Manny's Pong Game...")
-screen.bgcolor("Purple")
+#screen.bgcolor("Purple")
 screen.setup(width=800, height=650)
 screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
+# insert background image
+screen.bgpic("C:\GitHub\Intro to Programming 2022\Videogame2022\heavencity.gif")
+
 
 # Scoring 
-
 score = 0
-
-
 
 #create platform
 #platform  
-plat1 = turtle.Turtle() #automatically creates a background screen
+plat1 = turtle.Turtle() #turtle.Turtle = a class which automatically creates the object
 plat1.speed(5) #anywhere between 0-10
 #using this command I can simply type in the shape I want (given that it exists in the Turtle Screen's shape dictionary)
 plat1.shape("square")
 #allows me to simply write the name of the color of the platform (I could also use the color code)
-plat1.color("black")
+plat1.color("teal")
 #numbers have to be positive (width, length,)
 plat1.shapesize(stretch_wid=0.5, stretch_len=6)
 #"Pen-Up" simply means the created object does not draw anything on the sreen when moving
@@ -38,25 +39,30 @@ plat1.penup()
 #allows me to set the position of the object 
 plat1.goto(0,-250)
 
+
+
 #create the gameball (gb)
 gb = turtle.Turtle()
 gb.speed(0)
 gb.shape("circle")
-gb.color("Yellow")
+gb.color("dark blue")
 gb.penup()
 gb.goto(0, 0) #starting point = center of screen
-#moving the ball
 
+# adding an image
+
+#moving the ball
 gb.xspeed = 0.05 #everytime the ball moves it moves by 0.05 pixels
 gb.yspeed = 0.05
         
 # Game score
 player = 0
 
+
 # Show the gamescore on the display (gamescore = gs)
 gs = turtle.Turtle()
 gs.speed(0)
-gs.color("white")
+gs.color("purple")
 gs.penup()
 gs.hideturtle() #makes the curser/ drawing pen invisible and only shows the writing
 gs.goto(0, 260)
@@ -108,7 +114,8 @@ while True:
         gb.goto(0, 0)
         gb.yspeed *= - 1
         score +=1
-        gs.write("Player Score : 0  {}".format(score), align = "center", font = ("Times New Roman", 15, "normal"))
+        gs.clear() #will clear the original scoreboard 
+        gs.write(" Player Score :  {}".format(score), align = "center", font = ("Times New Roman", 15, "normal"))
     
     #Left and Right Borders
     if gb.xcor() > 380:
@@ -121,3 +128,4 @@ while True:
 
     # Platform and gameball colliding
   
+
