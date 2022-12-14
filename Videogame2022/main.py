@@ -100,9 +100,10 @@ while True:
         gb.sety(300)
         gb.yspeed *= - 1 
 
-    if gb.ycor() < -300:
-        gb.sety(-300)
+    if gb.ycor() < -345:
+        gb.goto(0, 0)
         gb.yspeed *= - 1
+    
     
     #Left and Right Borders
     if gb.xcor() > 380:
@@ -113,4 +114,3 @@ while True:
         gb.setx(-390)
         gb.xspeed *= -1
 
-        
