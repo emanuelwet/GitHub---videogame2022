@@ -10,10 +10,17 @@
 
 import pygame
 from pygame.locals import *
+import os
+
+
+#setup asset folders here
+#game_folder = os.path.dirname(__file__)
+#img_folder = os.path.join(game_folder, "images")
+
 
 #background image from files
+#gbimg = pygame.image.load("images")
 
-bg = pygame.image.load("C:\GitHub\Intro to Programming 2022\Videogame2022\heavencity.png")
 
 pygame.init()
 
@@ -24,15 +31,15 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Manny's Keep-Up Game")
 
 #text font (for all text)
-font = pygame.font.SysFont('Times New Roman', 30)
+font = pygame.font.SysFont('Algerian', 30)
 
 #define colors
 gameball = (234, 218, 184)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+#GREEN = (0, 255, 0)
+#BLUE = (0, 0, 255)
 GRAY = (128, 128, 128, 255)
 
 #platform and gameball colors
@@ -40,7 +47,7 @@ plat1_col = (WHITE)
 plat1_outline = (GRAY)
 
 #text color
-text_col = (RED)
+text_col = (BLACK)
 
 #define game settings
 cols = 6
@@ -98,14 +105,14 @@ class game_gb():
         #wall collision
         if self.rect.left < 0 or self.rect.right > screen_width:
             self.speed_x *= -1
-        #check for collision with top and bottom of the screen
+        #collisions w/ top + bottom of screen
         if self.rect.top < 0:
             self.speed_y *= -1
         if self.rect.bottom > screen_height:
             self.game_over = -1
 
 
-        #collission with the platform
+        #collission w/ the platform
         if self.rect.colliderect(player_plat1):
             #the game ball is making contact from the top
             if abs(self.rect.bottom - player_plat1.rect.top) < collision_thresh and self.speed_y > 0:
@@ -135,7 +142,7 @@ class game_gb():
         self.x = x - self.gb_rad
         self.y = y
         self.rect = Rect(self.x, self.y, self.gb_rad * 2, self.gb_rad * 2)
-        self.speed_x = 4
+        self.speed_x = 10
         self.speed_y = -4
         self.speed_max = 5
         self.game_over = 0
@@ -153,9 +160,10 @@ run = True
 while run:
 
     clock.tick(fps)
-    #INSIDE OF THE GAME LOOP
-    screen.blit(bg, (0, 0))
-    #screen.fill(GRAY)
+   
+
+    #               screen.blit(gbimg, (0, 0))
+    screen.fill(RED)
 
     #draw all objects
     player_plat1.draw()
@@ -173,13 +181,13 @@ while run:
     #print player instructions
     if not live_gb:
         if game_over == 0:
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
         elif game_over == 1:
             draw_text('YOU WON!', font, text_col, 240, screen_height // 2 + 50)
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
         elif game_over == -1:
             draw_text('YOU LOST!', font, text_col, 240, screen_height // 2 + 50)
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
 
 
     for event in pygame.event.get():
