@@ -18,8 +18,6 @@ import os
 #img_folder = os.path.join(game_folder, "images")
 
 
-#background image from files
-#gbimg = pygame.image.load("images")
 
 
 pygame.init()
@@ -34,12 +32,12 @@ pygame.display.set_caption("Manny's Keep-Up Game")
 font = pygame.font.SysFont('Algerian', 30)
 
 #define colors
-gameball = (234, 218, 184)
+#gb.color = (234, 218, 184)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 #GREEN = (0, 255, 0)
-#BLUE = (0, 0, 255)
+BLUE = (0, 0, 255)
 GRAY = (128, 128, 128, 255)
 
 #platform and gameball colors
@@ -153,16 +151,26 @@ class game_gb():
 player_plat1 = plat1()
 
 
+
+#adding background image
+#screen.blit(gbImg(0, 0))
+#screen.blit(img, (x, y))
+
+
 #gameball is created
 gb = game_gb(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
 
-run = True
-while run:
+while True:
+
+    #background image from files
+    background = pygame.image.load("heavencity.png")
+    #adding background image
+    screen.blit(gbImg(0, 0))
+    screen.blit(img, (x, y))
+
 
     clock.tick(fps)
-   
 
-    #               screen.blit(gbimg, (0, 0))
     screen.fill(RED)
 
     #draw all objects
