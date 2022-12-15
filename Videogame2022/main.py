@@ -1,126 +1,283 @@
-#EMANUEL WETSCHNIG
+import pygame
+from pygame.locals import *
 
+pygame.init()
 
-##### SOURCES #####
-# content from kids can code: http://kidscancode.org/blog/
-# help from geeks for geeks: https://www.geeksforgeeks.org/
-# help from https://www.youtube.com/watch?v=C6jJg9Zan7w&ab_channel=freeCodeCamp.org
+screen_width = 600
+screen_height = 600
 
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Breakout')
 
-# turtle will allow me to create graphic illustrations
-import turtle
-import os
+#define font
+font = pygame.font.SysFont('Constantia', 30)
 
-#create background
-screen = turtle.Screen()
-screen.title("Manny's Pong Game...")
-screen.bgcolor("Purple")
-screen.setup(width=800, height=650)
-screen.tracer(0) #stops the window from updating, calls for manual update (allows to speedup games)
-
-# gameball image code = screen.addshape("C:\GitHub\Intro to Programming 2022\Videogame2022\circle.gif.gif")
-
-# Scoring 
-score = 0
-
-#create platform
-#platform  
-plat1 = turtle.Turtle() #turtle.Turtle = a class which automatically creates the object
-plat1.speed(5) #anywhere between 0-10
-#using this command I can simply type in the shape I want (given that it exists in the Turtle Screen's shape dictionary)
-plat1.shape("square")
-#allows me to simply write the name of the color of the platform (I could also use the color code)
-plat1.color("teal")
-#numbers have to be positive (width, length,)
-plat1.shapesize(stretch_wid=0.5, stretch_len=6)
-#"Pen-Up" simply means the created object does not draw anything on the sreen when moving
-plat1.penup()
-#allows me to set the position of the object 
-plat1.goto(0,-250)
+#define colours
+bg = (234, 218, 184)
+#block colours
+block_red = (242, 85, 96)
+block_green = (86, 174, 87)
+block_blue = (69, 177, 232)
+#paddle colours
+paddle_col = (142, 135, 123)
+paddle_outline = (100, 100, 100)
+#text colour
+text_col = (78, 81, 139)
 
 
 
-#create the gameball (gb)
-gb = turtle.Turtle()
-gb.speed(0)
-gb.shape("circle")
-gb.color("dark blue")
-gb.penup()
-gb.goto(0, 0) #starting point = center of screen
-
-# adding an image for the gameball
+#define game variables
+cols = 6
+rows = 6
+clock = pygame.time.Clock()
+fps = 60
+live_ball = False
+game_over = 0
 
 
-#moving the ball
-gb.xspeed = 0.5 #everytime the ball moves it moves by 0.5 pixels
-gb.yspeed = 0.5
-        
-# Game score
-player = 0
+#function for outputting text onto the screen
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
 
 
-# Show the gamescore on the display (gamescore = gs)
-gs = turtle.Turtle()
-gs.speed(0)
-gs.color("Blue")
-gs.penup()
-gs.hideturtle() #makes the curser/ drawing pen invisible and only shows the writing
-gs.goto(0, 260)
-gs.write("Player Score : 0", align = "center", font = ("Times New Roman", 15, "normal"))
+#brick wall class
+class wall():
+    def __init__(self):
+        self.width = screen_width // cols
+        self.height = 50
+
+    def create_wall(self):
+        self.blocks = []
+        #define an empty list for an individual block
+        block_individual = []
+        for row in range(rows):
+            #reset the block row list
+            block_row = []
+            #iterate through each column in that row
+            for col in range(cols):
+                #generate x and y positions for each block and create a rectangle from that
+                block_x = col * self.width
+                block_y = row * self.height
+                rect = pygame.Rect(block_x, block_y, self.width, self.height)
+                #assign block strength based on row
+                if row < 2:
+                    strength = 3
+                elif row < 4:
+                    strength = 2
+                elif row < 6:
+                    strength = 1
+                #create a list at this point to store the rect and colour data
+                block_individual = [rect, strength]
+                #append that individual block to the block row
+                block_row.append(block_individual)
+            #append the row to the full list of blocks
+            self.blocks.append(block_row)
 
 
-    # create functions to move objects #
-
-# Platform moves to the left
-def plat1_left():
-    x = plat1.xcor()
-#x coordinate decreases as object moves left, increases as it moves right
-    x -= 10
-    plat1.setx(x)
-
-#allows me to move the platform to the right 
-def plat1_right():
-    x = plat1.xcor()
-    x += 10
-    plat1.setx(x)
+    def draw_wall(self):
+        for row in self.blocks:
+            for block in row:
+                #assign a colour based on block strength
+                if block[1] == 3:
+                    block_col = block_blue
+                elif block[1] == 2:
+                    block_col = block_green
+                elif block[1] == 1:
+                    block_col = block_red
+                pygame.draw.rect(screen, block_col, block[0])
+                pygame.draw.rect(screen, bg, (block[0]), 2)
 
 
-#keyboard binding
-screen.listen() #focuses on screen and acts on keyboard clicks
-screen.onkeypress(plat1_left, "a") #when a/d keys are pressed the written action takes place
-screen.onkeypress(plat1_right, "d")
+
+#paddle class
+class paddle():
+    def __init__(self):
+        self.reset()
 
 
-# Main game loop
+    def move(self):
+        #reset movement direction
+        self.direction = 0
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= self.speed
+            self.direction = -1
+        if key[pygame.K_RIGHT] and self.rect.right < screen_width:
+            self.rect.x += self.speed
+            self.direction = 1
 
-while True:
-    screen.update()
+    def draw(self):
+        pygame.draw.rect(screen, paddle_col, self.rect)
+        pygame.draw.rect(screen, paddle_outline, self.rect, 3)
 
-# Move the gameball
-    gb.setx(gb.xcor() + gb.xspeed) #everytime it goes through the loop it moves by 0.05 pixels
-    gb.sety(gb.ycor() + gb.yspeed)
 
-    # Top and Bottom Borders
-    if gb.ycor() > 300:
-        gb.sety(300)
-        gb.yspeed *= - 1 
+    def reset(self):
+        #define paddle variables
+        self.height = 20
+        self.width = int(screen_width / cols)
+        self.x = int((screen_width / 2) - (self.width / 2))
+        self.y = screen_height - (self.height * 2)
+        self.speed = 10
+        self.rect = Rect(self.x, self.y, self.width, self.height)
+        self.direction = 0
 
-    if gb.ycor() < -345:
-        gb.goto(0, 0)
-        gb.yspeed *= - 1
-        score +=1
-        gs.clear() #will clear the original scoreboard 
-        gs.write(" Player Score :  {}".format(score), align = "center", font = ("Times New Roman", 15, "normal"))
+
+#ball class
+class game_ball():
+    def __init__(self, x, y):
+        self.reset(x, y)
+
+
+    def move(self):
+
+        #collision threshold
+        collision_thresh = 5
+
+        #start off with the assumption that the wall has been destroyed completely
+        wall_destroyed = 1
+        row_count = 0
+        for row in wall.blocks:
+            item_count = 0
+            for item in row:
+                #check collision
+                if self.rect.colliderect(item[0]):
+                    #check if collision was from above
+                    if abs(self.rect.bottom - item[0].top) < collision_thresh and self.speed_y > 0:
+                        self.speed_y *= -1
+                    #check if collision was from below
+                    if abs(self.rect.top - item[0].bottom) < collision_thresh and self.speed_y < 0:
+                        self.speed_y *= -1                      
+                    #check if collision was from left
+                    if abs(self.rect.right - item[0].left) < collision_thresh and self.speed_x > 0:
+                        self.speed_x *= -1
+                    #check if collision was from right
+                    if abs(self.rect.left - item[0].right) < collision_thresh and self.speed_x < 0:
+                        self.speed_x *= -1
+                    #reduce the block's strength by doing damage to it
+                    if wall.blocks[row_count][item_count][1] > 1:
+                        wall.blocks[row_count][item_count][1] -= 1
+                    else:
+                        wall.blocks[row_count][item_count][0] = (0, 0, 0, 0)
+
+                #check if block still exists, in whcih case the wall is not destroyed
+                if wall.blocks[row_count][item_count][0] != (0, 0, 0, 0):
+                    wall_destroyed = 0
+                #increase item counter
+                item_count += 1
+            #increase row counter
+            row_count += 1
+        #after iterating through all the blocks, check if the wall is destroyed
+        if wall_destroyed == 1:
+            self.game_over = 1
+
+
+
+        #check for collision with walls
+        if self.rect.left < 0 or self.rect.right > screen_width:
+            self.speed_x *= -1
+
+        #check for collision with top and bottom of the screen
+        if self.rect.top < 0:
+            self.speed_y *= -1
+        if self.rect.bottom > screen_height:
+            self.game_over = -1
+
+
+        #look for collission with paddle
+        if self.rect.colliderect(player_paddle):
+            #check if colliding from the top
+            if abs(self.rect.bottom - player_paddle.rect.top) < collision_thresh and self.speed_y > 0:
+                self.speed_y *= -1
+                self.speed_x += player_paddle.direction
+                if self.speed_x > self.speed_max:
+                    self.speed_x = self.speed_max
+                elif self.speed_x < 0 and self.speed_x < -self.speed_max:
+                    self.speed_x = -self.speed_max
+            else:
+                self.speed_x *= -1
+
+
+
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+
+        return self.game_over
+
+
+    def draw(self):
+        pygame.draw.circle(screen, paddle_col, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad)
+        pygame.draw.circle(screen, paddle_outline, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad, 3)
+
+
+
+    def reset(self, x, y):
+        self.ball_rad = 10
+        self.x = x - self.ball_rad
+        self.y = y
+        self.rect = Rect(self.x, self.y, self.ball_rad * 2, self.ball_rad * 2)
+        self.speed_x = 4
+        self.speed_y = -4
+        self.speed_max = 5
+        self.game_over = 0
+
+
+
+#create a wall
+wall = wall()
+wall.create_wall()
+
+#create paddle
+player_paddle = paddle()
+
+
+#create ball
+ball = game_ball(player_paddle.x + (player_paddle.width // 2), player_paddle.y - player_paddle.height)
+
+run = True
+while run:
+
+    clock.tick(fps)
     
-    #Left and Right Borders
-    if gb.xcor() > 380:
-        gb.setx(380)
-        gb.xspeed *= -1
-    
-    if gb.xcor() < -390:
-        gb.setx(-390)
-        gb.xspeed *= -1
+    screen.fill(bg)
 
-    # Platform and gameball colliding
-  
+    #draw all objects
+    wall.draw_wall()
+    player_paddle.draw()
+    ball.draw()
 
+    if live_ball:
+        #draw paddle
+        player_paddle.move()
+        #draw ball
+        game_over = ball.move()
+        if game_over != 0:
+            live_ball = False
+
+
+    #print player instructions
+    if not live_ball:
+        if game_over == 0:
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+        elif game_over == 1:
+            draw_text('YOU WON!', font, text_col, 240, screen_height // 2 + 50)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+        elif game_over == -1:
+            draw_text('YOU LOST!', font, text_col, 240, screen_height // 2 + 50)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 100, screen_height // 2 + 100)
+
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and live_ball == False:
+            live_ball = True
+            ball.reset(player_paddle.x + (player_paddle.width // 2), player_paddle.y - player_paddle.height)
+            player_paddle.reset()
+            wall.create_wall()
+
+
+
+    pygame.display.update()
+
+pygame.quit()
