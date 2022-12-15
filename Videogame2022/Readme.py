@@ -2,17 +2,19 @@
 
 Project Title
 Simple overview of use/purpose.
-   #pong game 
+   #vertical single player pong game 
 
 Description
-An in-depth paragraph about your project and overview of use.
-  #need two sides that can bounce a ball either vertically or horizontally. The goal of the game is to score as many points as possible by forcing the ball to go past the opponent's platform
-
+An in-depth explanation about your project and overview of use.
+    # User controls one platform that moves horizontally and the goal is to prevent the ball from touching the bottom border        
+    # after pressing play use the "a" and "d" buttons to move the platform horizontally     
+            
 Getting Started
 Dependencies
 Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 ex. Python 3.x, Pygame, etc.
-   #I do not know yet, since I have not started working on the code
+   # Turtle
+   # 
 
 
 Installing
@@ -22,8 +24,10 @@ How/where to download your program
 Any modifications needed to be made to files/folders
 Executing program
 How to run the program
-  # after pressing play use the "w" and "s" buttons to move the platform vertically/ horizontally (have not decided which direction)
-  
+
+  # Although, I wanted to use an image as a background Mr. Cozort and I found that i had an issue with turtle that wouldn't allow me to transfer the files to other computers so I wont use any images  
+
+
 Step-by-step bullets
 code blocks for commands
 Help
@@ -33,8 +37,8 @@ command to run if program contains helper info
 Authors
 Contributors names and contact info
 
-ex. Chris Cozort
-ex. ccozort@bcp.org
+ # Chris Cozort - ccozort@bcp.org
+ # Emanuel Wetschnig - emanuel.wetschnig23@bcp.org
 
 Version History
 0.2
@@ -48,6 +52,9 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 Acknowledgments
 Inspiration, code snippets, etc.
 
-w3Schools
-PyGame
-Automate The Boring Stuff
+# w3Schools
+# PyGame
+# Mr. Cozort's course files
+# GeeksforGeeks website
+# Youtube video: https://www.youtube.com/watch?v=C6jJg9Zan7w&ab_channel=freeCodeCamp.org
+
