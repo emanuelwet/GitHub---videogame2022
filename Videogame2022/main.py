@@ -17,10 +17,10 @@ screen_width = 600
 screen_height = 600
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Breakout')
+pygame.display.set_caption("Manny's Keep Up Game")
 
 #define font
-font = pygame.font.SysFont('Constantia', 30)
+font = pygame.font.SysFont('Times New Roman', 30)
 
 #define colours
 bg = (234, 218, 184)
