@@ -1,3 +1,13 @@
+# EMANUEL WETSCHNIG
+
+
+##### SOURCES #####
+# help + basecode from https://www.youtube.com/watch?v=NIfkaOF3Hjs&list=PLjcN1EyupaQlbAyHLsuFIp0n6i_p8XWaO&ab_channel=CodingWithRuss    
+# content from kids can code: http://kidscancode.org/blog/
+# help from geeks for geeks: https://www.geeksforgeeks.org/
+# help from https://www.youtube.com/watch?v=C6jJg9Zan7w&ab_channel=freeCodeCamp.org  
+
+
 import pygame
 from pygame.locals import *
 
@@ -18,9 +28,9 @@ bg = (234, 218, 184)
 block_red = (242, 85, 96)
 block_green = (86, 174, 87)
 block_blue = (69, 177, 232)
-#paddle colours
-paddle_col = (142, 135, 123)
-paddle_outline = (100, 100, 100)
+#plat1 colours
+plat1_col = (142, 135, 123)
+plat1_outline = (100, 100, 100)
 #text colour
 text_col = (78, 81, 139)
 
@@ -90,8 +100,8 @@ class wall():
 
 
 
-#paddle class
-class paddle():
+#plat1 class
+class plat1():
     def __init__(self):
         self.reset()
 
@@ -108,12 +118,12 @@ class paddle():
             self.direction = 1
 
     def draw(self):
-        pygame.draw.rect(screen, paddle_col, self.rect)
-        pygame.draw.rect(screen, paddle_outline, self.rect, 3)
+        pygame.draw.rect(screen, plat1_col, self.rect)
+        pygame.draw.rect(screen, plat1_outline, self.rect, 3)
 
 
     def reset(self):
-        #define paddle variables
+        #define plat1 variables
         self.height = 20
         self.width = int(screen_width / cols)
         self.x = int((screen_width / 2) - (self.width / 2))
@@ -184,12 +194,12 @@ class game_ball():
             self.game_over = -1
 
 
-        #look for collission with paddle
-        if self.rect.colliderect(player_paddle):
+        #look for collission with plat1
+        if self.rect.colliderect(player_plat1):
             #check if colliding from the top
-            if abs(self.rect.bottom - player_paddle.rect.top) < collision_thresh and self.speed_y > 0:
+            if abs(self.rect.bottom - player_plat1.rect.top) < collision_thresh and self.speed_y > 0:
                 self.speed_y *= -1
-                self.speed_x += player_paddle.direction
+                self.speed_x += player_plat1.direction
                 if self.speed_x > self.speed_max:
                     self.speed_x = self.speed_max
                 elif self.speed_x < 0 and self.speed_x < -self.speed_max:
@@ -206,8 +216,8 @@ class game_ball():
 
 
     def draw(self):
-        pygame.draw.circle(screen, paddle_col, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad)
-        pygame.draw.circle(screen, paddle_outline, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad, 3)
+        pygame.draw.circle(screen, plat1_col, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad)
+        pygame.draw.circle(screen, plat1_outline, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad, 3)
 
 
 
@@ -227,12 +237,12 @@ class game_ball():
 wall = wall()
 wall.create_wall()
 
-#create paddle
-player_paddle = paddle()
+#create plat1
+player_plat1 = plat1()
 
 
 #create ball
-ball = game_ball(player_paddle.x + (player_paddle.width // 2), player_paddle.y - player_paddle.height)
+ball = game_ball(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
 
 run = True
 while run:
@@ -243,12 +253,12 @@ while run:
 
     #draw all objects
     wall.draw_wall()
-    player_paddle.draw()
+    player_plat1.draw()
     ball.draw()
 
     if live_ball:
-        #draw paddle
-        player_paddle.move()
+        #draw plat1
+        player_plat1.move()
         #draw ball
         game_over = ball.move()
         if game_over != 0:
@@ -272,8 +282,8 @@ while run:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN and live_ball == False:
             live_ball = True
-            ball.reset(player_paddle.x + (player_paddle.width // 2), player_paddle.y - player_paddle.height)
-            player_paddle.reset()
+            ball.reset(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
+            player_plat1.reset()
             wall.create_wall()
 
 
