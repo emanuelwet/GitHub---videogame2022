@@ -51,52 +51,7 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 
-#brick wall class
-class wall():
-    def __init__(self):
-        self.width = screen_width // cols
-        self.height = 50
 
-    def create_wall(self):
-        self.blocks = []
-        #define an empty list for an individual block
-        block_individual = []
-        for row in range(rows):
-            #reset the block row list
-            block_row = []
-            #iterate through each column in that row
-            for col in range(cols):
-                #generate x and y positions for each block and create a rectangle from that
-                block_x = col * self.width
-                block_y = row * self.height
-                rect = pygame.Rect(block_x, block_y, self.width, self.height)
-                #assign block strength based on row
-                if row < 2:
-                    strength = 3
-                elif row < 4:
-                    strength = 2
-                elif row < 6:
-                    strength = 1
-                #create a list at this point to store the rect and colour data
-                block_individual = [rect, strength]
-                #append that individual block to the block row
-                block_row.append(block_individual)
-            #append the row to the full list of blocks
-            self.blocks.append(block_row)
-
-
-    def draw_wall(self):
-        for row in self.blocks:
-            for block in row:
-                #assign a colour based on block strength
-                if block[1] == 3:
-                    block_col = block_blue
-                elif block[1] == 2:
-                    block_col = block_green
-                elif block[1] == 1:
-                    block_col = block_red
-                pygame.draw.rect(screen, block_col, block[0])
-                pygame.draw.rect(screen, bg, (block[0]), 2)
 
 
 
@@ -143,45 +98,6 @@ class game_ball():
 
         #collision threshold
         collision_thresh = 5
-
-        #start off with the assumption that the wall has been destroyed completely
-        wall_destroyed = 1
-        row_count = 0
-        for row in wall.blocks:
-            item_count = 0
-            for item in row:
-                #check collision
-                if self.rect.colliderect(item[0]):
-                    #check if collision was from above
-                    if abs(self.rect.bottom - item[0].top) < collision_thresh and self.speed_y > 0:
-                        self.speed_y *= -1
-                    #check if collision was from below
-                    if abs(self.rect.top - item[0].bottom) < collision_thresh and self.speed_y < 0:
-                        self.speed_y *= -1                      
-                    #check if collision was from left
-                    if abs(self.rect.right - item[0].left) < collision_thresh and self.speed_x > 0:
-                        self.speed_x *= -1
-                    #check if collision was from right
-                    if abs(self.rect.left - item[0].right) < collision_thresh and self.speed_x < 0:
-                        self.speed_x *= -1
-                    #reduce the block's strength by doing damage to it
-                    if wall.blocks[row_count][item_count][1] > 1:
-                        wall.blocks[row_count][item_count][1] -= 1
-                    else:
-                        wall.blocks[row_count][item_count][0] = (0, 0, 0, 0)
-
-                #check if block still exists, in whcih case the wall is not destroyed
-                if wall.blocks[row_count][item_count][0] != (0, 0, 0, 0):
-                    wall_destroyed = 0
-                #increase item counter
-                item_count += 1
-            #increase row counter
-            row_count += 1
-        #after iterating through all the blocks, check if the wall is destroyed
-        if wall_destroyed == 1:
-            self.game_over = 1
-
-
 
         #check for collision with walls
         if self.rect.left < 0 or self.rect.right > screen_width:
@@ -233,9 +149,7 @@ class game_ball():
 
 
 
-#create a wall
-wall = wall()
-wall.create_wall()
+
 
 #create plat1
 player_plat1 = plat1()
@@ -252,7 +166,6 @@ while run:
     screen.fill(bg)
 
     #draw all objects
-    wall.draw_wall()
     player_plat1.draw()
     ball.draw()
 
@@ -284,7 +197,7 @@ while run:
             live_ball = True
             ball.reset(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
             player_plat1.reset()
-            wall.create_wall()
+
 
 
 
