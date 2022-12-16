@@ -6,6 +6,8 @@
 # content from kids can code: http://kidscancode.org/blog/
 # help from geeks for geeks: https://www.geeksforgeeks.org/
 # help from https://www.youtube.com/watch?v=C6jJg9Zan7w&ab_channel=freeCodeCamp.org  
+# help from https://www.youtube.com/watch?v=dGwmmBBMlKs&ab_channel=buildwithpython
+
 
 
 import pygame
@@ -22,6 +24,7 @@ import os
 
 pygame.init()
 
+
 #Screen settings
 screen_width = 800
 screen_height = 650
@@ -35,9 +38,8 @@ font = pygame.font.SysFont('Algerian', 30)
 #gb.color = (234, 218, 184)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-#GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+#RED = (255, 0, 0)
+PURPLE = (238,130,238)
 GRAY = (128, 128, 128, 255)
 
 #platform and gameball colors
@@ -46,6 +48,7 @@ plat1_outline = (GRAY)
 
 #text color
 text_col = (BLACK)
+
 
 #define game settings
 cols = 6
@@ -60,13 +63,15 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
-#platform class
+
+#plat1 class
 class plat1():
     def __init__(self):
         self.reset()
 
+
     def move(self):
-        #moevement direction gets reset
+        #reset movement direction
         self.direction = 0
         key = pygame.key.get_pressed()
         if key[pygame.K_a] and self.rect.left > 0:
@@ -82,7 +87,7 @@ class plat1():
 
 
     def reset(self):
-        #define platform variables
+        #define plat1 variables
         self.height = 20
         self.width = int(screen_width / cols)
         self.x = int((screen_width / 2) - (self.width / 2))
@@ -92,27 +97,32 @@ class plat1():
         self.direction = 0
 
 
-#game ball class
-class game_gb():
+#ball class
+class game_ball():
     def __init__(self, x, y):
         self.reset(x, y)
 
+
     def move(self):
+
         #collision threshold
         collision_thresh = 5
-        #wall collision
+
+
+        #check for collision with walls
         if self.rect.left < 0 or self.rect.right > screen_width:
             self.speed_x *= -1
-        #collisions w/ top + bottom of screen
+
+        #check for collision with top and bottom of the screen
         if self.rect.top < 0:
             self.speed_y *= -1
         if self.rect.bottom > screen_height:
             self.game_over = -1
 
 
-        #collission w/ the platform
+        #look for collission with plat1
         if self.rect.colliderect(player_plat1):
-            #the game ball is making contact from the top
+            #check if colliding from the top
             if abs(self.rect.bottom - player_plat1.rect.top) < collision_thresh and self.speed_y > 0:
                 self.speed_y *= -1
                 self.speed_x += player_plat1.direction
@@ -123,6 +133,8 @@ class game_gb():
             else:
                 self.speed_x *= -1
 
+
+
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
@@ -130,58 +142,49 @@ class game_gb():
 
 
     def draw(self):
-        pygame.draw.circle(screen, plat1_col, (self.rect.x + self.gb_rad, self.rect.y + self.gb_rad), self.gb_rad)
-        pygame.draw.circle(screen, plat1_outline, (self.rect.x + self.gb_rad, self.rect.y + self.gb_rad), self.gb_rad, 3)
+        pygame.draw.circle(screen, plat1_col, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad)
+        pygame.draw.circle(screen, plat1_outline, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad, 3)
 
 
 
     def reset(self, x, y):
-        self.gb_rad = 10
-        self.x = x - self.gb_rad
+        self.ball_rad = 10
+        self.x = x - self.ball_rad
         self.y = y
-        self.rect = Rect(self.x, self.y, self.gb_rad * 2, self.gb_rad * 2)
-        self.speed_x = 10
+        self.rect = Rect(self.x, self.y, self.ball_rad * 2, self.ball_rad * 2)
+        self.speed_x = 4
         self.speed_y = -4
         self.speed_max = 5
         self.game_over = 0
 
 
 
-#platform is created
+
+
+#create plat1
 player_plat1 = plat1()
 
 
+#create ball
+ball = game_ball(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
 
-#adding background image
-#screen.blit(gbImg(0, 0))
-#screen.blit(img, (x, y))
-
-
-#gameball is created
-gb = game_gb(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
-
-while True:
-
-    #background image from files
-    background = pygame.image.load("heavencity.png")
-    #adding background image
-    screen.blit(gbImg(0, 0))
-    screen.blit(img, (x, y))
-
+run = True
+while run:
 
     clock.tick(fps)
-
-    screen.fill(RED)
+    
+    screen.fill(PURPLE)
 
     #draw all objects
+
     player_plat1.draw()
-    gb.draw()
+    ball.draw()
 
     if live_gb:
         #draw plat1
         player_plat1.move()
-        #draw gb
-        game_over = gb.move()
+        #draw ball
+        game_over = ball.move()
         if game_over != 0:
             live_gb = False
 
@@ -189,13 +192,13 @@ while True:
     #print player instructions
     if not live_gb:
         if game_over == 0:
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 225, screen_height // 2 + 100)
         elif game_over == 1:
-            draw_text('YOU WON!', font, text_col, 240, screen_height // 2 + 50)
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
+            draw_text('YOU WON!', font, text_col, 300, screen_height // 2 + 50)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 225, screen_height // 2 + 100)
         elif game_over == -1:
-            draw_text('YOU LOST!', font, text_col, 240, screen_height // 2 + 50)
-            draw_text('CLICK ANYWHERE TO START', font, text_col, 220, screen_height // 2 + 100)
+            draw_text('YOU LOST!', font, text_col, 300, screen_height // 2 + 50)
+            draw_text('CLICK ANYWHERE TO START', font, text_col, 225, screen_height // 2 + 100)
 
 
     for event in pygame.event.get():
@@ -203,8 +206,10 @@ while True:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN and live_gb == False:
             live_gb = True
-            gb.reset(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
+            ball.reset(player_plat1.x + (player_plat1.width // 2), player_plat1.y - player_plat1.height)
             player_plat1.reset()
+
+
 
 
     pygame.display.update()
