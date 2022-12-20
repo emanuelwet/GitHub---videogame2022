@@ -160,6 +160,11 @@ class game_ball():
 
 
 
+#background image
+
+# pygame.display.set_caption('image')
+# screen = pygame.image.load("heavencity.png")
+
 
 #create plat1
 player_plat1 = plat1()
